@@ -21,31 +21,36 @@ ws.onmessage=function(e){
 	//onmessage
 }
 ```
-
 <a name="MokouWebsocket"></a>
-## Docs
+## MokouWebsocket
 **Kind**: global class
 
 * [MokouWebsocket](#MokouWebsocket)
-    * [new MokouWebsocket(url, protocols)](#new_MokouWebsocket_new)
+    * [new MokouWebsocket(url, [protocols])](#new_MokouWebsocket_new)
     * _instance_
+        * [.readyState](#MokouWebsocket+readyState) : <code>number</code>
         * [.onopen(e)](#MokouWebsocket+onopen)
         * [.send(data)](#MokouWebsocket+send)
         * [.close()](#MokouWebsocket+close)
         * [.refresh()](#MokouWebsocket+refresh)
     * _inner_
-        * [~connect(reconnectAttempt)](#MokouWebsocket..connect)
+        * [~connect([reconnectAttempt])](#MokouWebsocket..connect)
 
 <a name="new_MokouWebsocket_new"></a>
-### new MokouWebsocket(url, protocols)
+### new MokouWebsocket(url, [protocols])
 MokouWebsocket - simple reconnecting websocket for nodejs
 
 
-| Param | Description |
-| --- | --- |
-| url | WebSocket url |
-| protocols | WebSocket protocols |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| url | <code>string</code> |  | WebSocket url |
+| [protocols] | <code>Array.&lt;Object&gt;</code> | <code>[]</code> | WebSocket protocols |
 
+<a name="MokouWebsocket+readyState"></a>
+### mokouWebsocket.readyState : <code>number</code>
+Websocket state
+
+**Kind**: instance property of <code>[MokouWebsocket](#MokouWebsocket)</code>
 <a name="MokouWebsocket+onopen"></a>
 ### mokouWebsocket.onopen(e)
 WebSocket events callbacks
@@ -62,9 +67,9 @@ Sends given string to the other side
 
 **Kind**: instance method of <code>[MokouWebsocket](#MokouWebsocket)</code>
 
-| Param |
-| --- |
-| data |
+| Param | Type |
+| --- | --- |
+| data | <code>string</code> |
 
 <a name="MokouWebsocket+close"></a>
 ### mokouWebsocket.close()
@@ -77,10 +82,10 @@ Refresh WebSocket connection
 
 **Kind**: instance method of <code>[MokouWebsocket](#MokouWebsocket)</code>
 <a name="MokouWebsocket..connect"></a>
-### MokouWebsocket~connect(reconnectAttempt)
+### MokouWebsocket~connect([reconnectAttempt])
 **Kind**: inner method of <code>[MokouWebsocket](#MokouWebsocket)</code>
 
-| Param | Description |
-| --- | --- |
-| reconnectAttempt | indicates if MokouWebSocket trying to reconnect to server |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [reconnectAttempt] | <code>bool</code> | <code>false</code> | indicates if MokouWebSocket trying to reconnect to server |
 

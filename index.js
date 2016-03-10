@@ -2,13 +2,17 @@ var WebSocket = require('ws');
 
 /**
  * MokouWebsocket - simple reconnecting websocket for nodejs
- * @param url - WebSocket url
- * @param protocols - WebSocket protocols
+ * @param {string} url - WebSocket url
+ * @param {Object[]} [protocols=[]] - WebSocket protocols
  * @constructor
  */
 function MokouWebsocket(url, protocols){
     this.protocols = protocols || [];
     this.url = url;
+    /**
+     * Websocket state
+     * @type {number}
+     */
     this.readyState = WebSocket.CONNECTING;
 
     this.reconnectInterval = 1000;
@@ -16,7 +20,6 @@ function MokouWebsocket(url, protocols){
 
     var ws;
     var forcedClose=false;
-    var timedOut=false;
 
     var self=this;
 
@@ -25,23 +28,23 @@ function MokouWebsocket(url, protocols){
      * @param e - WebSocket event
      */
     this.onopen = function(e){};
-    this.onclose = function(e){}
+    this.onclose = function(e){};
     this.onconnecting = function(e){};
     this.onerror = function(e){};
     this.onmessage = function(e){};
 
     /**
      *
-     * @param reconnectAttempt - indicates if MokouWebSocket trying to reconnect to server
+     * @param {bool} [reconnectAttempt=false] - indicates if MokouWebSocket trying to reconnect to server
      */
     function connect(reconnectAttempt){
+        reconnectAttempt = reconnectAttempt || false;
+
         ws = new WebSocket(self.url, self.protocols);
         self.onconnecting();
 
         var timeout = setTimeout(function(){
-            timedOut = true;
             ws.close();
-            timedOut = false;
         },self.timeoutInterval);
 
 
@@ -62,7 +65,7 @@ function MokouWebsocket(url, protocols){
             else{
                 self.readyState = WebSocket.CONNECTING;
                 self.onconnecting();
-                if (!reconnectAttempt && !timedOut) {
+                if (!reconnectAttempt) {
                     self.onclose(e);
                 }
                 setTimeout(function() {
@@ -85,7 +88,7 @@ function MokouWebsocket(url, protocols){
             else {
                 self.readyState = WebSocket.CONNECTING;
                 self.onconnecting();
-                if (!reconnectAttempt && !timedOut) {
+                if (!reconnectAttempt) {
                     self.onclose(e);
                 }
                 setTimeout(function() {
@@ -100,7 +103,7 @@ function MokouWebsocket(url, protocols){
 
     /**
      * Sends given string to the other side
-     * @param data
+     * @param {string} data
      */
     this.send = function(data){
         if(ws){
