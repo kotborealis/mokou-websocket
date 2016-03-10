@@ -1,0 +1,25 @@
+{
+  "name": "mokou-websocket",
+  "version": "1.0.0",
+  "description": "Reconnecting websocket",
+  "main": "index.js",
+  "scripts": {
+    "test": ";"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kotborealis/mokou-websocket.git"
+  },
+  "author": "kotborealis@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/kotborealis/mokou-websocket",
+  "bugs": {
+    "url": "https://github.com/kotborealis/mokou-websocket/issues"
+  },
+  "keywords": [
+    "websockets"
+  ],
+  "dependencies": {
+    "ws": "^1.0.1"
+  }
+}
