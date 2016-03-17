@@ -1,4 +1,6 @@
-var WebSocket = require('ws');
+const WebSocket = require('ws');
+const Events = require('events');
+const util = require('util');
 
 /**
  * MokouWebsocket - simple reconnecting websocket for nodejs
@@ -41,6 +43,7 @@ function MokouWebsocket(url, protocols){
         reconnectAttempt = reconnectAttempt || false;
 
         ws = new WebSocket(self.url, self.protocols);
+        self.emit('connecting');
         self.onconnecting();
 
         var timeout = setTimeout(function(){
@@ -52,6 +55,7 @@ function MokouWebsocket(url, protocols){
             clearTimeout(timeout);
             self.readyState=WebSocket.OPEN;
             reconnectAttempt=false;
+            self.emit('open',e);
             self.onopen(e);
         };
 
@@ -60,12 +64,15 @@ function MokouWebsocket(url, protocols){
             ws=null;
             if (forcedClose) {
                 self.readyState = WebSocket.CLOSED;
+                self.emit('close',e);
                 self.onclose(e);
             }
             else{
                 self.readyState = WebSocket.CONNECTING;
+                self.emit('connecting');
                 self.onconnecting();
                 if (!reconnectAttempt) {
+                    self.emit('close',e);
                     self.onclose(e);
                 }
                 setTimeout(function() {
@@ -74,27 +81,32 @@ function MokouWebsocket(url, protocols){
             }
         };
 
-        ws.onmessage = function(e){
+        ws.on('message',function(e){
+            self.emit('message',e);
             self.onmessage(e);
-        };
+        });
 
         ws.onerror = function(e) {
             clearTimeout(timeout);
             ws = null;
             if (forcedClose) {
                 self.readyState = WebSocket.CLOSED;
+                self.emit('close',e);
                 self.onclose(e);
             }
             else {
                 self.readyState = WebSocket.CONNECTING;
+                self.emit('connecting');
                 self.onconnecting();
                 if (!reconnectAttempt) {
+                    self.emit('close',e);
                     self.onclose(e);
                 }
                 setTimeout(function() {
                     connect(true);
                 }, self.reconnectInterval);
             }
+            self.emit('error',e);
             self.onerror(e);
         };
     }
@@ -134,5 +146,6 @@ function MokouWebsocket(url, protocols){
         }
     };
 }
+util.inherits(MokouWebsocket,Events);
 
 module.exports = MokouWebsocket;
