@@ -1,3 +1,5 @@
+'use strict';
+
 const WebSocket = require('ws');
 const Events = require('events');
 const util = require('util');
