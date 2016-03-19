@@ -28,18 +28,39 @@ function MokouWebsocket(url, protocols) {
   const self = this;
 
   /**
-   * WebSocket events callbacks
+   * Websocket on open event
    * @param {{}} e - WebSocket event
    */
   this.onopen = function (e) {
+    return e;
   };
+  /**
+   * Websocket on close event
+   * @param {{}} e - WebSocket event
+   */
   this.onclose = function (e) {
+    return e;
   };
+  /**
+   * Websocket on connectiong event
+   * @param {{}} e - WebSocket event
+   */
   this.onconnecting = function (e) {
+    return e;
   };
+  /**
+   * Websocket on error event
+   * @param {{}} e - WebSocket event
+   */
   this.onerror = function (e) {
+    return e;
   };
+  /**
+   * Websocket on message event
+   * @param {{}} e - WebSocket event
+   */
   this.onmessage = function (e) {
+    return e;
   };
 
   /**
@@ -53,7 +74,7 @@ function MokouWebsocket(url, protocols) {
     self.emit('connecting');
     self.onconnecting();
 
-    const timeout = setTimeout(function () {
+    const timeout = setTimeout(() => {
       ws.close();
     }, self.timeoutInterval);
 
@@ -81,13 +102,13 @@ function MokouWebsocket(url, protocols) {
           self.emit('close', e);
           self.onclose(e);
         }
-        setTimeout(function () {
+        setTimeout(() => {
           connect(true);
         }, self.reconnectInterval);
       }
     };
 
-    ws.on('message', function (e) {
+    ws.on('message', (e) => {
       self.emit('message', e);
       self.onmessage(e);
     });
@@ -108,7 +129,7 @@ function MokouWebsocket(url, protocols) {
           self.emit('close', e);
           self.onclose(e);
         }
-        setTimeout(function () {
+        setTimeout(() => {
           connect(true);
         }, self.reconnectInterval);
       }
