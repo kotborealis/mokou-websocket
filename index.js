@@ -8,11 +8,13 @@ const util = require('util');
  * MokouWebsocket - simple reconnecting websocket for nodejs
  * @param {string} url - WebSocket url
  * @param {Object[]} [protocols=[]] - WebSocket protocols
+ * @param {Object} - WebSocket options
  * @constructor
  */
-function MokouWebsocket(url, protocols) {
-  this.protocols = protocols || [];
+function MokouWebsocket(url, protocols= [], options = {}) {
+  this.protocols = protocols;
   this.url = url;
+  this.options = options;
   /**
    * Websocket state
    * @type {number}
@@ -70,7 +72,7 @@ function MokouWebsocket(url, protocols) {
   function connect(reconnectAttempt) {
     reconnectAttempt = reconnectAttempt || false;
 
-    ws = new WebSocket(self.url, self.protocols);
+    ws = new WebSocket(self.url, self.protocols, self.options);
     self.emit('connecting');
     self.onconnecting();
 
